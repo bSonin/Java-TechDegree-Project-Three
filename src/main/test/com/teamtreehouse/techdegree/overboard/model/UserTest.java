@@ -1,5 +1,7 @@
 package com.teamtreehouse.techdegree.overboard.model;
 
+import com.teamtreehouse.techdegree.overboard.exc.AnswerAcceptanceException;
+import com.teamtreehouse.techdegree.overboard.exc.VotingException;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -22,7 +24,7 @@ public class UserTest {
     }
 
     @Test
-    public void upvotingQuestionIncreasesReputationOfQuestionerByFive() {
+    public void upVotingQuestionIncreasesReputationOfQuestionerByFive() {
         User voter = new User(board,"Voter");
 
         voter.upVote(question);
@@ -31,7 +33,7 @@ public class UserTest {
     }
 
     @Test
-    public void upvotingAnswerIncreasesReputationOfAnswererByTen() {
+    public void upVotingAnswerIncreasesReputationOfAnswererByTen() {
         User voter = new User(board, "Voter");
 
         voter.upVote(answer);
@@ -46,6 +48,33 @@ public class UserTest {
         questioner.acceptAnswer(answer);
 
         assertEquals(15, answerer.getReputation());
+    }
+
+    @Test(expected = VotingException.class)
+    public void upVotingSelfAuthoredPostThrowsException() throws Exception {
+        // upVote takes abstract Post - only need to test answer or question
+        answerer.upVote(answer);
+
+    }
+
+    @Test(expected = VotingException.class)
+    public void downVotingSelfAuthoredPostThrowsException() throws Exception {
+        // downVote takes abstract Post - only need to test answer or question
+        questioner.downVote(question);
+    }
+
+    @Test
+    public void acceptingAnswerForAnotherUsersQuestionThrowsExceptionWithMessage() {
+        try {
+            answerer.acceptAnswer(answer);
+        } catch (AnswerAcceptanceException aae) {
+            assertEquals("Only Questioner can accept this answer as it is their question", aae.getMessage());
+        }
+    }
+
+    @Test
+    public void acceptingAnswerToSelfAuthoredQuestionAcceptsAnswer() {
+        // TODO:bhs - Write this test
     }
 
 }
