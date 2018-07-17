@@ -62,6 +62,7 @@ public class User {
         // Up-voted questions get you 5 points, currently down-voting of questions affects nothing.
         for (Question question : getQuestions()) {
             reputation += (question.getUpVotes() * 5);
+            reputation -= (question.getDownVotes() * 2);
         }
         // Up-voted answers get you 10 points, down-voting costs 1 point
         for (Answer answer : getAnswers()) {

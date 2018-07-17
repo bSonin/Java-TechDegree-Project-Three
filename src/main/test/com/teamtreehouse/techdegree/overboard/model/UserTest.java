@@ -74,56 +74,18 @@ public class UserTest {
 
     @Test
     public void acceptingAnswerToSelfAuthoredQuestionAcceptsAnswer() {
-        // TODO:bhs - Write this test
+        questioner.acceptAnswer(answer);
+
+        assertEquals(true, question.getAnswers().get(0).isAccepted());
+    }
+
+    @Test
+    public void downVotingQuestionDecreasesQuestionersReputationByTwo() {
+        User voter = new User(board, "Voter");
+
+        voter.downVote(question);
+
+        assertEquals(-2, questioner.getReputation());
     }
 
 }
-
-/*
-    Some Notes:
-        1) Write test method names as <action><consequence>
-
-
-    Testing Standard: AAA
-        1) Arrange - Setup the test scenario
-        2) Act - Perform the action you wish to test
-        3) Assert - Assert the behavior you desire has occured
-
-        - Blank line separates each aspect of the test
-        - Try to shoot for one assertion per test
-            -> asserts work like exceptions, cancel immediately at failure
-        - Each behavior under test should be ISOLATED
-            -> Could be OK to have two asserts in one test if they describe the same behavior
-
-
-    Fixtures
-        - When you kick off test runner (TR), the TR collects all methods annotated
-          with @Test
-        - An object instance is then created for each collected method and the methods are executed
-        - All of these objects can access fields on the primary test class
-        - Using "Fixtures", or annotations which denote fields to be shared among test methods,
-          we can remove duplicated code by letting each test method use the same
-          setup and teardown instructions (@Before and @After).
-
-
-    FIRST Rule for Test Writing
-        - Fast
-        - Isolated
-        - Repeatable
-        - Self-verifying
-        - Timely
-
-    How to Find Boundary Conditions - CORRECT:
-        - Date doesn't CONFORM
-        - How does the ORDERING impact your function
-        - Check the RANGE
-        - Does the unit REFERENCE other code?
-        - EXISTENCE - can things be null?
-        - How does the number of elements in a collection, CARDINALITY, affect you? (0, 1, N)
-        - How does TIME influence you?
-
-    What not to Test?
-        - Don't test things that don't normally break (e.g. getters/setters)
-        - JUnit -> "Test until fears turns to boredom"
-        -
- */
