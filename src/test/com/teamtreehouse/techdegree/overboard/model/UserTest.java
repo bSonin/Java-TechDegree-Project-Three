@@ -3,7 +3,10 @@ package com.teamtreehouse.techdegree.overboard.model;
 import com.teamtreehouse.techdegree.overboard.exc.AnswerAcceptanceException;
 import com.teamtreehouse.techdegree.overboard.exc.VotingException;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
 import static org.junit.Assert.*;
 
 public class UserTest {
@@ -12,6 +15,9 @@ public class UserTest {
     User answerer;
     Question question;
     Answer answer;
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setUp() {
@@ -65,11 +71,11 @@ public class UserTest {
 
     @Test
     public void acceptingAnswerForAnotherUsersQuestionThrowsExceptionWithMessage() {
-        try {
-            answerer.acceptAnswer(answer);
-        } catch (AnswerAcceptanceException aae) {
-            assertEquals("Only Questioner can accept this answer as it is their question", aae.getMessage());
-        }
+        exception.expect(AnswerAcceptanceException.class);
+        exception.expectMessage("Only Questioner can accept this answer as it is their question");
+
+        answerer.acceptAnswer(answer);
+
     }
 
     @Test
